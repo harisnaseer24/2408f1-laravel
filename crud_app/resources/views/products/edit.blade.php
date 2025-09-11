@@ -45,6 +45,7 @@
                    
                     <form action="/editproduct" method="post" enctype="multipart/form-data">
                         @csrf
+                        <input type="hidden" name="id"  class="form-control my-3" value="{{ $product['id'] }}">
                         <input type="text" name="title" placeholder="Product title" class="form-control my-3" value="{{ $product['title'] }}">
                         @error('title')
                        <span class="text-danger">{{ $message }}</span>     

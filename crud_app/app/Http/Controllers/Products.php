@@ -55,6 +55,32 @@ class Products extends Controller
    
 }
 
+//update product
+ public function updateProduct (Request $request) {
+  $request->validate([
+        "title"=>"required",
+        "description"=> "required",
+        "price"=> "required",
+        "stock"=> "required",
+        "image"=> "required|image|mimes:png,jpg,jpeg| max:10000",
+       ]);
 
+  $imagename = time().".".$request->image->extension();//34534535435435435.jpg
+       $request->image->move(public_path("/product_uploads"), $imagename);
+       $product = Product::find($request->id);
+       $product->title = $request->title;
+       $product->description = $request->description;
+       $product->price = $request->price;
+       $product->stock = $request->stock;
+       $product->image = $imagename;
+       $product->save();
+       return view("products.index")->withSuccess("Product updated Successfully..!");
+}
+    public function searchProduct(Request $request){
+        $search = $request->input('query');
+        $products = Product::where('title','like','%'. $search.'%')->orWhere('description','like','%'. $search .'%')->get();
+        return view("products.index",compact('products'));
+
+    }
 
 }
